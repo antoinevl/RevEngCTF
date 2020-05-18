@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Game of Life &#8212; RevEng CTF</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/sphinx-book-theme.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/mystnb.js"></script>
+    <script src="../_static/sphinx-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .secondtoggle, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="About" href="../about.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/ecuador.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">RevEng CTF</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="../about.html">About</a>
+  </li>
+<li class="navbar-special">
+<p class="margin-caption">Reverse Engineering</p>
+</li>
+  <li class="active">
+    <a href="">Game of Life</a>
+  </li>
+</ul>
+</nav>
+<p class="navbar_footer">Powered by <a href="https://jupyterbook.org">Jupyter Book</a></p>
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse" data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu" aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation" title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i class="fas fa-download"></i></button>
+
+            
+            <div class="dropdown-buttons">
+                <!-- ipynb file if we had a myst markdown file -->
+                
+                <!-- Download raw file -->
+                <a class="dropdown-buttons" href="../_sources/reverse/ooo-reliving.ipynb.txt"><button type="button" class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip" data-placement="left">.ipynb</button></a>
+                <!-- Download PDF via print -->
+                <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF" onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+            </div>
+            
+        </div>
+
+        <!-- Edit this page -->
+        
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+            <div class="dropdown-buttons">
+                
+                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/reverse/ooo-reliving.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                
+                
+                
+            </div>
+        </div>
+        
+    </div>
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#introduction" class="nav-link">Introduction</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#first-analysis" class="nav-link">First analysis</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#find-the-flag" class="nav-link">Find the flag</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#let-the-fun-begin" class="nav-link">Let the fun begin</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#detect-bits-with-opencv" class="nav-link">Detect bits with OpenCV</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#coordinates-to-matrix" class="nav-link">Coordinates to matrix</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#matrix-to-binary-code-instructions" class="nav-link">Matrix to binary code instructions</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#binary-code-to-assembly-instructions" class="nav-link">Binary code to assembly instructions</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#interpreter" class="nav-link">Interpreter</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#solving-the-challenge" class="nav-link">Solving the challenge</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="game-of-life">
+<h1>Game of Life<a class="headerlink" href="#game-of-life" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><strong>Event</strong>: DEFCON CTF Quals 2020</p>
+<p><strong>Challenge name</strong>: Fountain OOO REliving (115 pts)</p>
+<p><strong>Description</strong>: We have found the fountain OOO RElive. By discovering its secrets, you will restart the game of life with a chance to do it all over again. This challenge is in memory of John Conway (26 December 1937 – 11 April 2020).</p>
+<p><strong>File</strong>: <code class="docutils literal notranslate"><span class="pre">fountain-ooo-relive</span></code></p>
+</div>
+<div class="section" id="first-analysis">
+<h2>First analysis<a class="headerlink" href="#first-analysis" title="Permalink to this headline">¶</a></h2>
+<p>We quickly realise <code class="docutils literal notranslate"><span class="pre">fountain-ooo-relive</span></code> is a MacroCell file representing a pattern that can be imported into the Golly software. Which corroborates the fact this challenge is a tribute to John Conway, a British mathematician famous for its cellular automation called “Game of Life”.</p>
+<p>Wikipedia is your friend: <a class="reference external" href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life</a></p>
+<p>Link to software: <a class="reference external" href="http://golly.sourceforge.net/">http://golly.sourceforge.net/</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;fountain-ooo-relive&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;[M2]&#39;, &#39;# GOOOlly its the Fountain OOO REliving&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>After importing the file as a pattern into Golly, we obtain this:</p>
+<p><img alt="" src="../_images/golly.png" /></p>
+<p>… which very much looks like a computer architecture!</p>
+<p>It turns out to be a minimalistic RISC architecture designed by a bunch of people who were challenged to make Tetris run on top of Golly. Here is a link to this epic thread: <a class="reference external" href="https://codegolf.stackexchange.com/questions/11880/build-a-working-game-of-tetris-in-conways-game-of-life">https://codegolf.stackexchange.com/questions/11880/build-a-working-game-of-tetris-in-conways-game-of-life</a></p>
+<p>They basically built:</p>
+<ul class="simple">
+<li><p>a basic RISC architecture</p></li>
+<li><p>an assembly language</p></li>
+<li><p>an interpreter</p></li>
+<li><p>a higher-level language called Cogol</p></li>
+</ul>
+</div>
+<div class="section" id="find-the-flag">
+<h2>Find the flag<a class="headerlink" href="#find-the-flag" title="Permalink to this headline">¶</a></h2>
+<p>Having read the above thread, it becomes obvious that the flag will be derived from instructions the organisers concealed into the memory of that custom computer.</p>
+<p>But where are the instructions stored in memory? In the ROM! The instructions fetched from the ROM then update values of memory locations located in the RAM, after execution.</p>
+<p>The goal here is therefore to find instructions from the ROM.</p>
+<p>The below figure shows where the ROM and the RAM are.</p>
+<p><img alt="" src="../_images/golly2.png" /></p>
+<p>If we zoom in on the ROM, we get…</p>
+<p><img alt="" src="../_images/ROM.png" /></p>
+<p>…a grid of automates that represents bits in memory. So we’ve got two different automates corresponding to 0s and 1s.</p>
+<p>For example, if we zoom in even more, the automate representing “1” is <img alt="" src="../_images/1.png" /></p>
+</div>
+<div class="section" id="let-the-fun-begin">
+<h2>Let the fun begin<a class="headerlink" href="#let-the-fun-begin" title="Permalink to this headline">¶</a></h2>
+<p>My approach here was:</p>
+<ul class="simple">
+<li><p>Use computer vision to detect patterns corresponding to 1s</p></li>
+<li><p>Create a corresponding matrix with the fetched 0s and 1s</p></li>
+<li><p>Parse the binary code to get assembly code</p></li>
+<li><p>Find the flag from the assembly</p></li>
+</ul>
+<div class="section" id="detect-bits-with-opencv">
+<h3>Detect bits with OpenCV<a class="headerlink" href="#detect-bits-with-opencv" title="Permalink to this headline">¶</a></h3>
+<p>The below code detects 1s and upload them in the <code class="docutils literal notranslate"><span class="pre">coords</span></code> array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;../_images/ROM.png&#39;</span><span class="p">)</span> <span class="c1"># Screenshot of the ROM</span>
+<span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;../_images/1.png&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># Screenshot of a pattern coresponding to &quot;1&quot;</span>
+
+<span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">matchTemplate</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span><span class="n">template</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">TM_CCOEFF_NORMED</span><span class="p">)</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">res</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">)</span>
+
+<span class="n">coords</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
+
+<span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;../_images/res.png&#39;</span><span class="p">,</span><span class="n">img_rgb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And it gives:</p>
+<p><img alt="" src="../_images/res.png" /></p>
+</div>
+<div class="section" id="coordinates-to-matrix">
+<h3>Coordinates to matrix<a class="headerlink" href="#coordinates-to-matrix" title="Permalink to this headline">¶</a></h3>
+<p>We then convert the results stored in the <code class="docutils literal notranslate"><span class="pre">coords</span></code> array to a matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_cols</span> <span class="o">=</span> <span class="mi">116</span>
+<span class="n">n_lines</span> <span class="o">=</span> <span class="mi">59</span> <span class="c1"># with the first one </span>
+<span class="n">delta</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="n">start_y</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">start_x</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">59</span><span class="p">,</span><span class="mi">116</span><span class="p">),</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="n">new_coords</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">start_x</span><span class="p">)</span><span class="o">/</span><span class="n">delta</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">start_y</span><span class="p">)</span><span class="o">/</span><span class="n">delta</span><span class="p">)</span>
+    <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span>
+    <span class="n">mat</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x13112bf90&gt;
+</pre></div>
+</div>
+<img alt="../_images/ooo-reliving_23_1.png" src="../_images/ooo-reliving_23_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="matrix-to-binary-code-instructions">
+<h3>Matrix to binary code instructions<a class="headerlink" href="#matrix-to-binary-code-instructions" title="Permalink to this headline">¶</a></h3>
+<p>Following the Stack Overflow thread, we can turn the matrix into instruction lines, which we store in the <code class="docutils literal notranslate"><span class="pre">code</span></code> variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cols</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_lines</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">+=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">+=</span> <span class="s1">&#39;0&#39;</span>
+    <span class="n">code</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">code</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;0000000000000000000000000000000000000000000000000000000001&#39;,
+ &#39;0000000000000000000011111111111111100011111111111111110001&#39;,
+ &#39;0000000000001001100100000000001001100100000000001001110011&#39;,
+ &#39;0000000000001001110010101010110001110100000000000000010110&#39;,
+ &#39;0000000000001001010100000000001001010100000000001001110011&#39;,
+ &#39;0000000000001001110011000111011000110100000000000000010110&#39;,
+ &#39;0000000000001001000100000000001001000100000000001001110011&#39;,
+ &#39;0000000000001001110010101101001001100100000000000000010110&#39;,
+ &#39;0000000000001000110100000000001000110100000000001001110011&#39;,
+ &#39;0000000000001001110010101101101111010100000000000000010110&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="binary-code-to-assembly-instructions">
+<h3>Binary code to assembly instructions<a class="headerlink" href="#binary-code-to-assembly-instructions" title="Permalink to this headline">¶</a></h3>
+<p>“Assembly to binary code” has been implemented in the Python script: <a class="reference external" href="https://github.com/QuestForTetris/QFT/blob/master/CreateROM.py">https://github.com/QuestForTetris/QFT/blob/master/CreateROM.py</a></p>
+<p>We reversed that script to get a “binary code to assembly” function.</p>
+<p>Assembly instructions are now stored in the <code class="docutils literal notranslate"><span class="pre">asm</span></code> variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bitstring</span> <span class="k">import</span> <span class="n">BitArray</span>
+
+<span class="n">opcodes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0000&#39;</span><span class="p">:</span> <span class="s1">&#39;MNZ&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;0001&#39;</span><span class="p">:</span> <span class="s1">&#39;MLZ&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;0010&#39;</span><span class="p">:</span> <span class="s1">&#39;ADD&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;0011&#39;</span><span class="p">:</span> <span class="s1">&#39;SUB&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;0100&#39;</span><span class="p">:</span> <span class="s1">&#39;AND&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;0101&#39;</span><span class="p">:</span> <span class="s1">&#39;OR&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;0110&#39;</span><span class="p">:</span> <span class="s1">&#39;XOR&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;0111&#39;</span><span class="p">:</span> <span class="s1">&#39;ANT&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;1000&#39;</span><span class="p">:</span> <span class="s1">&#39;SL&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;1001&#39;</span><span class="p">:</span> <span class="s1">&#39;SRL&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;1010&#39;</span><span class="p">:</span> <span class="s1">&#39;SRA&#39;</span><span class="p">}</span>
+
+<span class="n">modes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;00&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;01&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;10&#39;</span><span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;11&#39;</span><span class="p">:</span> <span class="s1">&#39;C&#39;</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span> 
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">code</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">opcode</span> <span class="o">=</span> <span class="n">opcodes</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]]</span>
+        <span class="n">arg1</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">18</span><span class="o">*</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">arg2</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">18</span><span class="p">:</span><span class="mi">18</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">arg3</span> <span class="o">=</span> <span class="n">l</span><span class="p">[:</span><span class="mi">18</span><span class="p">]</span>
+        <span class="n">mode1</span> <span class="o">=</span> <span class="n">modes</span><span class="p">[</span><span class="n">arg1</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="n">arg1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">BitArray</span><span class="p">(</span><span class="nb">bin</span><span class="o">=</span><span class="n">arg1</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="n">mode2</span> <span class="o">=</span> <span class="n">modes</span><span class="p">[</span><span class="n">arg2</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="n">arg2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">BitArray</span><span class="p">(</span><span class="nb">bin</span><span class="o">=</span><span class="n">arg2</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="n">mode3</span> <span class="o">=</span> <span class="n">modes</span><span class="p">[</span><span class="n">arg3</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="n">arg3</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">BitArray</span><span class="p">(</span><span class="nb">bin</span><span class="o">=</span><span class="n">arg3</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. &#39;</span> <span class="o">+</span> <span class="n">opcode</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">mode1</span> <span class="o">+</span> <span class="n">arg1</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">mode2</span> <span class="o">+</span> <span class="n">arg2</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">mode3</span> <span class="o">+</span> <span class="n">arg3</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asm</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">asm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>0. MLZ -1 44 43
+1. XOR 0 0 2
+2. MLZ -1 25971 2
+3. MLZ -1 14554 3
+4. MLZ -1 22445 4
+5. MLZ -1 25411 5
+6. MLZ -1 3743 6
+7. MLZ -1 13391 7
+8. MLZ -1 12059 8
+9. MLZ -1 2554 9
+10. MLZ -1 15823 10
+11. MLZ -1 5921 11
+12. MLZ -1 18009 12
+13. MLZ -1 14823 13
+14. MLZ -1 4757 14
+15. MLZ -1 7754 15
+16. MLZ -1 22480 16
+17. MLZ -1 8371 17
+18. MLZ -1 12418 18
+19. MLZ -1 22738 19
+20. MLZ -1 16499 20
+21. MLZ -1 7132 21
+22. MLZ -1 22793 22
+23. MLZ -1 22307 23
+24. MLZ -1 12485 24
+25. MLZ -1 7936 25
+26. MLZ -1 26630 26
+27. MLZ -1 15483 27
+28. MLZ -1 6471 28
+29. MLZ -1 1806 29
+30. MLZ -1 22705 30
+31. MLZ -1 25019 31
+32. MLZ -1 16442 32
+33. MLZ -1 5145 33
+34. MLZ -1 15593 34
+35. MLZ -1 23867 35
+36. MLZ -1 23738 36
+37. MLZ -1 14086 37
+38. MLZ -1 23123 38
+39. MLZ -1 0 39
+40. XOR A1 -27179 39
+41. SUB A39 A2 2
+42. XOR A1 -14018 39
+43. SUB A39 A3 3
+44. XOR A1 -22549 39
+45. SUB A39 A4 4
+46. XOR A1 -27735 39
+47. SUB A39 A5 5
+48. XOR A1 -225 39
+49. SUB A39 A6 6
+50. XOR A1 -15190 39
+51. SUB A39 A7 7
+52. XOR A1 -8339 39
+53. SUB A39 A8 8
+54. XOR A1 -1415 39
+55. SUB A39 A9 9
+56. XOR A1 -12768 39
+57. SUB A39 A10 10
+58. XOR A1 -6243 39
+59. SUB A39 A11 11
+60. XOR A1 -18725 39
+61. SUB A39 A12 12
+62. XOR A1 -13743 39
+63. SUB A39 A13 13
+64. XOR A1 -7402 39
+65. SUB A39 A14 14
+66. XOR A1 -4444 39
+67. SUB A39 A15 15
+68. XOR A1 -22495 39
+69. SUB A39 A16 16
+70. XOR A1 -12017 39
+71. SUB A39 A17 17
+72. XOR A1 -16138 39
+73. SUB A39 A18 18
+74. XOR A1 -22234 39
+75. SUB A39 A19 19
+76. XOR A1 -20283 39
+77. SUB A39 A20 20
+78. XOR A1 -5054 39
+79. SUB A39 A21 21
+80. XOR A1 -22161 39
+81. SUB A39 A22 22
+82. XOR A1 -22641 39
+83. SUB A39 A23 23
+84. XOR A1 -16096 39
+85. SUB A39 A24 24
+86. XOR A1 -4238 39
+87. SUB A39 A25 25
+88. XOR A1 -26510 39
+89. SUB A39 A26 26
+90. XOR A1 -13059 39
+91. SUB A39 A27 27
+92. XOR A1 -5726 39
+93. SUB A39 A28 28
+94. XOR A1 -2182 39
+95. SUB A39 A29 29
+96. XOR A1 -22211 39
+97. SUB A39 A30 30
+98. XOR A1 -28099 39
+99. SUB A39 A31 31
+100. XOR A1 -20296 39
+101. SUB A39 A32 32
+102. XOR A1 -7012 39
+103. SUB A39 A33 33
+104. XOR A1 -12961 39
+105. SUB A39 A34 34
+106. XOR A1 -21059 39
+107. SUB A39 A35 35
+108. XOR A1 -21210 39
+109. SUB A39 A36 36
+110. XOR A1 -14493 39
+111. SUB A39 A37 37
+112. XOR A1 -21817 39
+113. SUB A39 A38 38
+114. MLZ -1 -2 0
+115. MLZ 0 0 0
+
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="interpreter">
+<h3>Interpreter<a class="headerlink" href="#interpreter" title="Permalink to this headline">¶</a></h3>
+<p>An interpreter exists: <a class="reference external" href="http://play.starmaninnovations.com/qftasm/">http://play.starmaninnovations.com/qftasm/</a></p>
+<p>But the code is easy enough to be analysed quickly:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">MLZ</span> <span class="pre">-1</span> <span class="pre">[n]</span> <span class="pre">[addr]</span></code> instructions set the <code class="docutils literal notranslate"><span class="pre">addr</span></code> value to the number <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></li>
+<li><p>Addresses 2 to 38 contain values that then get updated using <code class="docutils literal notranslate"><span class="pre">XOR</span></code> and <code class="docutils literal notranslate"><span class="pre">SUB</span></code> methods.</p></li>
+<li><p>Two other variables located respectively in addresses 1 and 39 are being used to perform the updates.</p></li>
+<li><p>Value at address 39 is known but not at address 1.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">interpreter</span><span class="p">(</span><span class="n">asm</span><span class="p">,</span> <span class="n">addr1</span><span class="p">):</span>
+    <span class="n">init</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">xored</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">asm</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:</span><span class="mi">39</span><span class="p">]:</span>
+        <span class="n">init</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">asm</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">40</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="n">xored</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">addr1</span><span class="o">^</span><span class="n">v</span><span class="p">)</span><span class="o">-</span><span class="n">u</span><span class="o">+</span><span class="mi">32768</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">init</span><span class="p">,</span><span class="n">xored</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="solving-the-challenge">
+<h3>Solving the challenge<a class="headerlink" href="#solving-the-challenge" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>We know that the flag starts with <code class="docutils literal notranslate"><span class="pre">OOO</span></code>.</p></li>
+<li><p>As address 1 is unknown, the last step here is to try out different possibilities for that address (bruteforce) until we find the ASCII decimal code to the <code class="docutils literal notranslate"><span class="pre">O</span></code> character in the 3 first addresses containing the flag (2, 3 and 4).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">asm</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">37000</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">interpreter</span><span class="p">(</span><span class="n">asm</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">l</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">79</span><span class="p">,</span><span class="mi">79</span><span class="p">,</span><span class="mi">79</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">l</span><span class="p">])</span>
+    <span class="k">return</span> <span class="s1">&#39;Not found&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solve</span><span class="p">(</span><span class="n">asm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;OOO{in_this_life___youre_on_your_own}&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="../about.html" title="previous page">About</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By RevEng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    <script src="../_static/js/index.js"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,10 @@
+title: RevEng CTF
+author: RevEng
+logo: _images/ecuador.png
+
+execute:
+  execute_notebooks: 'off'
+
+html:
+  home_page_in_navbar: false
+  use_edit_page_button: false
