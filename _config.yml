@@ -6,5 +6,6 @@ execute:
   execute_notebooks: 'off'
 
 html:
+  favicon: _images/favicon.ico
   home_page_in_navbar: false
   use_edit_page_button: false
