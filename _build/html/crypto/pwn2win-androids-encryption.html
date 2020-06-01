@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Androids Encryption &#8212; RevEng CTF</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/sphinx-book-theme.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/mystnb.js"></script>
+    <script src="../_static/sphinx-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .secondtoggle, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Game of Life" href="../reverse/ooo-reliving.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/ecuador.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">RevEng CTF</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  
+  <ul class="nav sidenav_l1">
+  <li class="">
+    <a href="../about.html">About</a>
+  </li>
+<li class="navbar-special">
+<p class="margin-caption">Reverse Engineering</p>
+</li>
+  <li class="">
+    <a href="../reverse/ooo-reliving.html">Game of Life</a>
+  </li>
+<li class="navbar-special">
+<p class="margin-caption">Cryptography</p>
+</li>
+  <li class="active">
+    <a href="">Androids Encryption</a>
+  </li>
+</ul>
+</nav>
+<p class="navbar_footer">Powered by <a href="https://jupyterbook.org">Jupyter Book</a></p>
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse" data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu" aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation" title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i class="fas fa-download"></i></button>
+
+            
+            <div class="dropdown-buttons">
+                <!-- ipynb file if we had a myst markdown file -->
+                
+                <!-- Download raw file -->
+                <a class="dropdown-buttons" href="../_sources/crypto/pwn2win-androids-encryption.ipynb.txt"><button type="button" class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip" data-placement="left">.ipynb</button></a>
+                <!-- Download PDF via print -->
+                <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF" onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+            </div>
+            
+        </div>
+
+        <!-- Edit this page -->
+        
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+        
+        <div class="dropdown-buttons-trigger">
+            <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+            <div class="dropdown-buttons">
+                
+                <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/crypto/pwn2win-androids-encryption.ipynb"><button type="button" class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip" data-placement="left"><img class="binder-button-logo" src="../_static/images/logo_binder.svg" alt="Interact on binder">Binder</button></a>
+                
+                
+                
+            </div>
+        </div>
+        
+    </div>
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#introduction" class="nav-link">Introduction</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#encryption-logic" class="nav-link">Encryption logic</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#step-by-step" class="nav-link">Step by step</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#send-a-random-plaintext-to-the-server-and-get-the-response-ciphertext" class="nav-link">Send a random plaintext to the server and get the response ciphertext</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#query-the-encrypted-flag-from-the-server" class="nav-link">Query the encrypted flag from the server</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#decrypt-the-ciphertext-following-the-diagram-above" class="nav-link">Decrypt the ciphertext following the diagram above</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#and-find-the-flag" class="nav-link">And find the flag!</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="androids-encryption">
+<h1>Androids Encryption<a class="headerlink" href="#androids-encryption" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><strong>Solved by</strong>: <a class="reference external" href="https://twitter.com/hyperc54">hyperc</a>.</p>
+<p><strong>Event</strong>: Pwn2Win 2020: https://ctftime.org/event/961</p>
+<p><strong>Challenge name</strong>: Androids Encryption (115 pts)</p>
+<p><strong>Description</strong>: We intercept an algorithm that is used among Androids. There are many hidden variables. Is it possible to recover the message?</p>
+<p><strong>File</strong>: <code class="docutils literal notranslate"><span class="pre">server.py</span></code></p>
+</div>
+<div class="section" id="encryption-logic">
+<h2>Encryption logic<a class="headerlink" href="#encryption-logic" title="Permalink to this headline">¶</a></h2>
+<p>The challenge was accessible on a remote server which provided us with two options:</p>
+<ul class="simple">
+<li><p>Get an encrypted version of a plaintext provided by the user</p></li>
+<li><p>Get an encrypted version of the flag</p></li>
+</ul>
+<p>The Python implementation of the server was also provided in <code class="docutils literal notranslate"><span class="pre">server.py</span></code> and allowed us to understand the logic behind the encryption method.</p>
+<p>The main method of this app is the <code class="docutils literal notranslate"><span class="pre">encrypt</span></code> function.</p>
+<p>Given a plaintext, a key and an initialisation vector (IV), it:</p>
+<ul class="simple">
+<li><p>Encrypts the plaintext using AES algorithm in a CBC fashion but with a little twist.</p></li>
+<li><p>Returns the ciphertext concatenated with the IV used.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">key2</span><span class="p">,</span> <span class="n">iv2</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">BLOCK_SIZE</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;Invalid key size&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">iv</span><span class="p">)</span> <span class="o">==</span> <span class="n">BLOCK_SIZE</span><span class="p">,</span> <span class="s1">&#39;Invalid IV size&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span> <span class="o">%</span> <span class="n">BLOCK_SIZE</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Invalid plaintext size&#39;</span>
+    <span class="n">bs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">to_blocks</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+    <span class="n">ctxt</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+    <span class="n">aes</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span>
+    <span class="n">curr</span> <span class="o">=</span> <span class="n">iv</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+        <span class="n">ctxt</span> <span class="o">+=</span> <span class="n">aes</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">xor</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">curr</span><span class="p">))</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">ctxt</span><span class="p">[</span><span class="o">-</span><span class="n">bs</span><span class="p">:],</span> <span class="n">block</span><span class="p">)</span>
+    <span class="n">iv2</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">iv2</span><span class="p">)</span>
+    <span class="n">key2</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">to_blocks</span><span class="p">(</span><span class="n">ctxt</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">iv</span><span class="o">+</span><span class="n">ctxt</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which can be illustrated by the following diagram:</p>
+<p><img alt="" src="../_images/android-encryption-1.png" /></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">encrypt</span></code> function also does another important thing: it modifies two global variables, <code class="docutils literal notranslate"><span class="pre">iv2</span></code> and <code class="docutils literal notranslate"><span class="pre">key2</span></code> that are exactly the key and initialisation vector used by the application to return an encrypted version of the flag to the user.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">key2</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">to_blocks</span><span class="p">(</span><span class="n">ctxt</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Hence, <code class="docutils literal notranslate"><span class="pre">key2</span></code> is reinitialised after each encryption to the result of our previous encryption, which we obviously have.</p>
+<p>Since this type of encryption is symmetric, getting <code class="docutils literal notranslate"><span class="pre">key2</span></code> enables us to decrypt the encrypted flag.</p>
+</div>
+<div class="section" id="step-by-step">
+<h2>Step by step<a class="headerlink" href="#step-by-step" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="send-a-random-plaintext-to-the-server-and-get-the-response-ciphertext">
+<h3>Send a random plaintext to the server and get the response ciphertext<a class="headerlink" href="#send-a-random-plaintext-to-the-server-and-get-the-response-ciphertext" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">response1</span> <span class="o">=</span> <span class="s1">&#39;qal7b3mi7fEvSccj+NcaYtqU4i4io4qT1g88K9wY2nQ=&#39;</span>
+<span class="n">iv_plus_ctext</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">response1</span><span class="p">)</span>
+<span class="n">ctext</span> <span class="o">=</span> <span class="n">al</span><span class="p">[</span><span class="mi">16</span><span class="p">:]</span> <span class="c1"># IV is 16 bytes long</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>### Get key2 from the recevied ciphertext</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">key2</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">to_blocks</span><span class="p">(</span><span class="n">ctext</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="query-the-encrypted-flag-from-the-server">
+<h3>Query the encrypted flag from the server<a class="headerlink" href="#query-the-encrypted-flag-from-the-server" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">enc_flag</span> <span class="o">=</span> <span class="s1">&#39;36X0Ug8ZEIvrRDeus6c3GBynEY7La36H0/A1Bqoy87go8FyYOeRQOuN7b0fXJXMYqWZ9lo9MWkS8EaN9/8Tl7A==&#39;</span>
+<span class="n">enc_flag</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">enc_flag</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="decrypt-the-ciphertext-following-the-diagram-above">
+<h3>Decrypt the ciphertext following the diagram above<a class="headerlink" href="#decrypt-the-ciphertext-following-the-diagram-above" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="k">import</span> <span class="n">AES</span>
+
+<span class="n">iv2</span> <span class="o">=</span> <span class="n">enc_flag</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span> 
+<span class="n">c1</span> <span class="o">=</span> <span class="n">enc_flag</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">32</span><span class="p">]</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">enc_flag</span><span class="p">[</span><span class="mi">32</span><span class="p">:</span><span class="mi">48</span><span class="p">]</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">enc_flag</span><span class="p">[</span><span class="mi">48</span><span class="p">:</span><span class="mi">64</span><span class="p">]</span>
+
+<span class="n">aes</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">aes</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">c1</span><span class="p">),</span><span class="n">iv2</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">aes</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">c2</span><span class="p">),</span><span class="n">xor</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span><span class="n">p1</span><span class="p">))</span>
+<span class="n">p3</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">aes</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">c3</span><span class="p">),</span><span class="n">xor</span><span class="p">(</span><span class="n">c2</span><span class="p">,</span><span class="n">p2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="and-find-the-flag">
+<h3>And find the flag!<a class="headerlink" href="#and-find-the-flag" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span><span class="p">(</span><span class="n">p1</span><span class="o">+</span><span class="n">p2</span><span class="o">+</span><span class="n">p3</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;CTF-BR{kn3W_7h4T_7hEr3_4r3_Pc8C_r3pe471ti0ns?!?}&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="../reverse/ooo-reliving.html" title="previous page">Game of Life</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By RevEng<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    <script src="../_static/js/index.js"></script>
+    
+  </body>
+</html>

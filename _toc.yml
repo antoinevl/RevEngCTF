@@ -2,3 +2,5 @@
 - file: about
 - header: Reverse Engineering
 - file: reverse/ooo-reliving
+- header: Cryptography
+- file: crypto/pwn2win-androids-encryption
