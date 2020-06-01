@@ -3,6 +3,8 @@ About
 
 **RevEng**, capturing flags since 2018.
 
+Check out a selection of cool write-ups to challenges we've solved. 
+
 CTFTime team page: <a href="https://ctftime.org/team/47221">
          <img alt="CTFTime" src="./_images/ctftime.png"
          width="4%" height="4%">

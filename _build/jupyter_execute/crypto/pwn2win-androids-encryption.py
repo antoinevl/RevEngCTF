@@ -4,7 +4,7 @@
 
 __Solved by__: [hyperc](https://twitter.com/hyperc54).
 
-__Event__: Pwn2Win 2020: https://ctftime.org/event/961
+__Event__: Pwn2Win 2020: [https://ctftime.org/event/961](https://ctftime.org/event/961)
 
 __Challenge name__: Androids Encryption (115 pts)
 

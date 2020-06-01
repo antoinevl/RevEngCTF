@@ -4,7 +4,7 @@
 
 __Solved by__: [avl](https://twitter.com/avlsec)
 
-__Event__: DEFCON CTF Quals 2020: https://ctftime.org/event/994
+__Event__: DEFCON CTF Quals 2020: [https://ctftime.org/event/994](https://ctftime.org/event/994)
 
 __Challenge name__: Fountain OOO REliving (115 pts)
 
