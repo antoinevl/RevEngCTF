@@ -12,7 +12,10 @@
    "metadata": {},
    "source": [
     "## Introduction\n",
-    "__Event__: DEFCON CTF Quals 2020\n",
+    "\n",
+    "__Solved by__: [avl](https://twitter.com/avlsec)\n",
+    "\n",
+    "__Event__: DEFCON CTF Quals 2020: [https://ctftime.org/event/994](https://ctftime.org/event/994)\n",
     "\n",
     "__Challenge name__: Fountain OOO REliving (115 pts)\n",
     "\n",
