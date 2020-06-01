@@ -210,7 +210,7 @@
 <p>The main method of this app is the <code class="docutils literal notranslate"><span class="pre">encrypt</span></code> function.</p>
 <p>Given a plaintext, a key and an initialisation vector (IV), it:</p>
 <ul class="simple">
-<li><p>Encrypts the plaintext using AES algorithm in a CBC fashion but with a little twist.</p></li>
+<li><p>Encrypts the plaintext using AES algorithm in the <a class="reference external" href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Propagating_cipher_block_chaining_(PCBC)">PCBC mode</a>.</p></li>
 <li><p>Returns the ciphertext concatenated with the IV used.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">):</span>
